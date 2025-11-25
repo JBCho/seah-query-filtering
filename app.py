@@ -193,8 +193,14 @@ if uploaded_file:
 
             # --- 7. 프롬프트 확인 (토글) ---
             st.divider()
-            with st.expander("🛠️ 사용된 프롬프트 확인하기"):
+            with st.expander("사용된 프롬프트 확인하기"):
                 st.text_area("GPT에게 전송된 프롬프트 내용:", value=used_prompt, height=300)
+
+            # --- 8. GPT 답변 확인 (토글) ---
+            st.divider()
+            with st.expander("답변 확인하기"):
+                st.text_area("GPT가 생성한 파이썬 코드:", value=generated_code, height=300)
+
 
     except Exception as e:
         st.error(f"파일을 읽는 중 오류가 발생했습니다: {e}")

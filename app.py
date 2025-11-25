@@ -138,8 +138,8 @@ if uploaded_file:
         st.divider()
         col_q1, col_q2 = st.columns([3, 1])
         with col_q1:
-            user_query = st.text_input("🔍 질문을 입력하세요", 
-                                     placeholder="예: '탄소 함량이 0.05 이상이고 T방향 연신율이 50 미만인 걸 찾아줘'")
+            user_query = st.text_input("🔍 질문을 입력하세요 (예: 탄소 함량이 0.05 이상이고 T방향 연신율이 50 미만인 걸 찾아줘)", 
+                                     placeholder="")
         
         with col_q2:
             run_btn = st.button("검색 실행", type="primary", use_container_width=True)

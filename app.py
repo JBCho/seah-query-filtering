@@ -8,7 +8,7 @@ st.set_page_config(page_title="엑셀 자연어 분석기", layout="wide")
 
 st.title("📊 AI 기반 엑셀 데이터 분석 및 추출기")
 st.markdown("""
-    업로드한 엑셀 파일(2단 헤더 구조 포함)을 자연어로 검색하고 결과를 다운로드할 수 있습니다.
+    업로드한 통합 시험 결과 엑셀 파일을 자연어로 검색하고 결과를 다운로드할 수 있습니다.
 """)
 
 # --- 1. 사이드바: 설정 ---
@@ -68,9 +68,9 @@ def get_filter_code(df_columns, user_query):
             ],
             temperature=0
         )
-        return response.choices[0].message.content.strip().replace("```python", "").replace("```", "")
+        return response.choices[0].message.content.strip().replace("```python", "").replace("```", ""), prompt
     except Exception as e:
-        return str(e)
+        return str(e), prompt
 
 if uploaded_file:
     # --- 3. 데이터 로드 전략 ---
@@ -105,7 +105,7 @@ if uploaded_file:
         if run_btn and user_query:
             with st.spinner("AI가 데이터를 분석 중입니다..."):
                 # 1) 코드 생성
-                generated_code = get_filter_code(df_analysis.columns, user_query)
+                generated_code, used_prompt = get_filter_code(df_analysis.columns, user_query)
                 
                 # 디버깅용 코드 표시 (필요 시 주석 처리 가능)
                 with st.expander("생성된 파이썬 코드 확인"):
@@ -154,6 +154,10 @@ if uploaded_file:
                 except Exception as e:
                     st.error(f"코드 실행 중 오류가 발생했습니다: {e}")
                     st.error("쿼리를 조금 더 구체적으로 작성해보세요.")
+
+            st.divider()
+            with st.expander("🛠️ 사용된 프롬프트 확인하기"):
+                st.text_area("GPT에게 전송된 프롬프트 내용:", value=used_prompt, height=300)
 
     except Exception as e:
         st.error(f"파일을 읽는 중 오류가 발생했습니다: {e}")
